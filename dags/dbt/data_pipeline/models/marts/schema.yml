@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: dim_materials
+    description: "Dimension table containing details about materials."
+    columns:
+      - name: material_id
+        description: "Primary key for the materials table."
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_print_jobs_test_results
+    description: "Fact table containing test results from print jobs."
+    columns:
+      - name: material_id
+        description: "Foreign key linking to dim_materials.material_id"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_materials')
+              field: material_id
+      - name: print_job_id
+        description: "not null identifier for each print job."
+        tests:
+          - not_null
+      - name: test_result_id
+        description: "not null identifier for each test result."
+        tests:
+          - not_null
+      - name: elongation
+        description: "Test result for elongation."
+      - name: yield_strength
+        description: "Test result for yield strength."
+      - name: ultimate_tensile_strength
+        description: "Test result for ultimate tensile strength."

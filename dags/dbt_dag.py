@@ -8,7 +8,6 @@ from cosmos.profiles import SnowflakeUserPasswordProfileMapping
 from airflow.providers.airbyte.operators.airbyte import AirbyteTriggerSyncOperator
 
 
-
 AIRBYTE_CONNECTION_ID = "airbyte_conn" # configure at Airflow Connection Config
 SNOWFLAKE_CONNECTION_ID = "snowflake_conn" # configure at Airflow Connection Config
 
@@ -60,38 +59,3 @@ def airbyte_dbt_pipeline():
 # Instantiate the DAG
 airbyte_dbt_pipeline()
 
-'''
-with DAG(
-    dag_id="airbyte_dbt_pipeline",
-    start_date=datetime(2023, 9, 10),
-    schedule_interval="@daily",
-    catchup=False,
-) as dag:
-
-    # Create Airbyte sync task
-    airbyte_sync = create_airbyte_task(dag)
-
-    # Create dbt DAG that uses the snowflake_conn
-    dbt_snowflake_dag = DbtDag(
-        project_config=ProjectConfig(DBT_PROJECT_PATH),
-        operator_args={"install_deps": True},
-        profile_config=profile_config,
-        execution_config=execution_config
-        )
-
-    # Set the task dependencies: Airbyte sync first, then dbt pipeline
-    airbyte_sync >> dbt_snowflake_dag
-'''
-
-'''
-dbt_snowflake_dag = DbtDag(
-    project_config=ProjectConfig("/usr/local/airflow/dags/dbt/data_pipeline"),
-    operator_args={"install_deps": True},
-    profile_config=profile_config,
-    execution_config=ExecutionConfig(dbt_executable_path=f"{os.environ['AIRFLOW_HOME']}/dbt_venv/bin/dbt",),
-    schedule_interval="@daily",
-    start_date=datetime(2023, 9, 10),
-    catchup=False,
-    dag_id="dbt_dag",
-)
-'''

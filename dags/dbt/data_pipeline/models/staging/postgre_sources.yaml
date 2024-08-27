@@ -1,0 +1,31 @@
+version: 2
+
+sources:
+  - name: postgre
+    database: DBT_DB
+    schema: DBT_SCHEMA
+    tables:
+      - name: MATERIALS
+        columns: 
+          - name: MATERIAL
+            tests: 
+               - unique
+               - not_null
+      - name: PRINT_JOBS
+        columns: 
+          - name: PRINTJOBID
+            tests: 
+               - unique
+               - not_null               
+      - name: TEST_RESULTS
+        columns: 
+          - name: MATERIALID
+            tests: 
+              - relationships:
+                  to: source('postgre', 'MATERIALS')
+                  field: MATERIALID
+          - name: PRINTJOBID
+            tests: 
+              - relationships:
+                  to: source('postgre', 'PRINT_JOBS')
+                  field: PRINTJOBID                  
